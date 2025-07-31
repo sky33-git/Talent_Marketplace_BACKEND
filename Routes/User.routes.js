@@ -1,9 +1,7 @@
 import express from 'express'
-import userRoutes from '../Controller/User.controller.js'
+import { deleteUser, getAllUsers, getUserById, updateUser, createUser } from '../Controller/User.controller.js'
 
 const router = express.Router()
-
-const { deleteUser, getAllUsers, getUserById, updateUser, createUser } = userRoutes
 
 router.get('/', getAllUsers)
 router.get('/:id', getUserById)

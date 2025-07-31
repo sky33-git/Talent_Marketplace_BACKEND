@@ -1,13 +1,16 @@
 import mongoose from "mongoose";
+import Counter from './Counter.model.js'
 
 const UserSchema = new mongoose.Schema({
+    userId: Number,
     name: String,
     email: String,
     phone: Number,
     country: String,
-    profileURL: String,
-    coverImageURL: String,
-    loginType: {
+    linkedInURL: String,
+    githubURL: String,
+    portfolioURL: String,
+    authProvider: {
         type: String,
         enum: ["linkedIn", "google", "email"]
     },
@@ -23,7 +26,7 @@ const UserSchema = new mongoose.Schema({
                 description: String
             }
         ],
-        default: []
+        default: [],
     },
     experience: {
         type: [
@@ -44,7 +47,7 @@ const UserSchema = new mongoose.Schema({
                 instituteName: String,
                 degree: {
                     type: String,
-                    enum: ["SSC", "12th/Intermediate", "Under-Graduate(UG)", "Post-Graduate(PG)"],
+                    enum: ["SSC", "12th/Intermediate", "Bachelors", "Masters"],
                 },
                 fieldOfStudy: String,
                 startDate: Date,
@@ -59,7 +62,7 @@ const UserSchema = new mongoose.Schema({
             langName: String,
             proficiency: {
                 type: String,
-                enum: ["Fluent", "Intermediate", "Conversational"]
+                enum: ["Fluent", "Intermediate", "Conversational", "Native"]
             }
         }],
         default: []
@@ -75,7 +78,22 @@ const UserSchema = new mongoose.Schema({
     userProfileImageURL: String,
     backgroundImageURL: String,
 
-}, { timestamps: true })
+}, { timestamps: true }, { _id: false })
+
+UserSchema.pre('save', async function (next) {
+
+    if (!this.isNew) return next();
+    
+    const counter = await Counter.findOneAndUpdate(
+        { name: 'userId' },
+        { $inc: { seq: 1 } },
+        { upsert: true, new: true }
+    )
+
+    this.userId = counter.seq
+    next();
+})
+
 
 const User = mongoose.model('users', UserSchema, 'Users')
 
