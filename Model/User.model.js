@@ -20,6 +20,7 @@ const UserSchema = new mongoose.Schema({
     projects: {
         type: [
             {
+                _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
                 title: String,
                 techStack: [String],
                 projectLiveURL: String,
@@ -31,6 +32,7 @@ const UserSchema = new mongoose.Schema({
     experience: {
         type: [
             {
+                _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
                 title: String,
                 companyName: String,
                 startDate: Date,
@@ -44,6 +46,7 @@ const UserSchema = new mongoose.Schema({
     education: {
         type: [
             {
+                _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
                 instituteName: String,
                 degree: {
                     type: String,
@@ -59,6 +62,7 @@ const UserSchema = new mongoose.Schema({
     },
     language: {
         type: [{
+            _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
             langName: String,
             proficiency: {
                 type: String,
@@ -83,7 +87,7 @@ const UserSchema = new mongoose.Schema({
 UserSchema.pre('save', async function (next) {
 
     if (!this.isNew) return next();
-    
+
     const counter = await Counter.findOneAndUpdate(
         { name: 'userId' },
         { $inc: { seq: 1 } },

@@ -56,20 +56,25 @@ export const createUser = async (req, res) => {
 }
 
 export const updateUser = async (req, res) => {
+
     try {
-        const user = await User.findOne({ userId: req.params.id },{
-            new: true,
-        })
+        const user = await User.findOneAndUpdate(
+            { userId: req.params.id }, req.body,
+            {   new: true,
+                runValidators: true
+            })
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" })
+        }
 
         res.json(user)
     }
-
     catch (err) {
-        res.status(500).json({
-            error: err.message
-        })
+        res.status(500).json({ error: err.message })
     }
 }
+
 
 export const deleteUser = async (req, res) => {
     try {
@@ -78,7 +83,7 @@ export const deleteUser = async (req, res) => {
     }
     catch (err) {
         res.status(500).json({
-            error: err.message
+            error: err.message | "No user found!"
         })
     }
 }
