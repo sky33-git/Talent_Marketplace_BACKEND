@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 .env
-serviceAccount.js
+/Config/firebase-service-account.json
 
 # Editor directories and files
 .vscode/*
