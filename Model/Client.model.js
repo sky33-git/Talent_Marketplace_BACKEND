@@ -1,7 +1,17 @@
 import mongoose from "mongoose";
+import Counter from "./Counter.model.js"
+
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const AutoIncrementFactory = require('mongoose-sequence');
+
+const AutoIncrement = AutoIncrementFactory(mongoose);
 
 const clientSchema = new mongoose.Schema({
 
+    firebaseUid: String,
+    clientId: Number,
     name: String,
     email: String,
     phone: Number,
@@ -10,7 +20,11 @@ const clientSchema = new mongoose.Schema({
         city: String,
         timezone: String
     },
-    loginType: {
+    role: {
+        type: String,
+        default: 'client',
+    },
+    authProvider: {
         type: String,
         enum: ["linkedIn", "google", "email"]
     },
@@ -29,8 +43,15 @@ const clientSchema = new mongoose.Schema({
         description: String,
         clientProfileImageURL: String,
         clientBackgroundImageURL: String,
+        lastLogin: Date
     }
 })
+
+clientSchema.plugin(AutoIncrement, {
+    inc_field: 'clientId',   
+    id: 'client_counter',       
+    start_seq: 1            
+});
 
 const Client = mongoose.model('client', clientSchema, 'Clients')
 

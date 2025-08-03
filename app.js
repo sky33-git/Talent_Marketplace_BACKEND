@@ -27,7 +27,7 @@ app.use(cors({
     credentials: true
 }))
 
-app.use('/api', AuthRouter)
+app.use('/auth/api', AuthRouter)
 app.use('/api/users', imageRouter)
 app.use('/api/users', userRoutes)
 app.use('/api/clients', clientRoutes)

@@ -13,11 +13,11 @@ export const getAllClients = async (req, res) => {
 }
 
 export const getClientById = async (req, res) => {
+
     try {
         const clients = await Client.findById(req.params.id)
         res.json(clients);
     }
-
     catch (err) {
         res.status(500).json({
             error: err.message
@@ -32,7 +32,6 @@ export const createClient = async (req, res) => {
 
         res.status(201).json(clients);
     }
-
     catch (err) {
         res.status(500).json({
             error: err.message
@@ -47,7 +46,6 @@ export const updateClient = async (req, res) => {
         })
         res.json(clients);
     }
-
     catch (err) {
         res.status(500).json({
             error: err.message
@@ -58,9 +56,8 @@ export const updateClient = async (req, res) => {
 export const deleteClient = async (req, res) => {
     try {
         await Client.findByIdAndDelete(req.params.id)
-        res.json({ message: "clients deleted" });
+        res.json({ message: "client deleted" });
     }
-
     catch (err) {
         res.status(500).json({
             error: err.message

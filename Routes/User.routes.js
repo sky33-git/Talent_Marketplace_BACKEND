@@ -1,8 +1,11 @@
 import express from 'express'
 import { deleteUser, getAllUsers, getUserById, updateUser, createUser } from '../Controller/User.controller.js'
+import { authenticate, authorize } from '../Middleware/Auth.Middleware.js'
 
 const router = express.Router()
 
+router.use(authenticate)
+router.use(authorize('user'))
 router.get('/', getAllUsers)
 router.get('/:id', getUserById)
 router.post('/', createUser)

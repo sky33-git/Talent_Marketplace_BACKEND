@@ -1,15 +1,27 @@
 import mongoose from "mongoose";
-import Counter from './Counter.model.js'
+import Counter  from './Counter.model.js'
+
+
 
 const UserSchema = new mongoose.Schema({
+
+    firebaseUId: String,
     userId: Number,
     name: String,
     email: String,
     phone: Number,
     country: String,
+    avatar: {
+        type: String,
+        default: ""
+    },
     linkedInURL: String,
     githubURL: String,
     portfolioURL: String,
+    role: {
+        type: String,
+        default: 'user',
+    },
     authProvider: {
         type: String,
         enum: ["linkedIn", "google", "email"]
@@ -81,6 +93,7 @@ const UserSchema = new mongoose.Schema({
     },
     userProfileImageURL: String,
     backgroundImageURL: String,
+    lastLogin: Date
 
 }, { timestamps: true }, { _id: false })
 

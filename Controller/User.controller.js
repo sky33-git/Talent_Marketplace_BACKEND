@@ -41,7 +41,6 @@ export const createUser = async (req, res) => {
         if (userCheck) {
             throw new Error("User already exists!")
         }
-
         const user = new User(req.body)
         await user.save()
 
@@ -74,7 +73,6 @@ export const updateUser = async (req, res) => {
         res.status(500).json({ error: err.message })
     }
 }
-
 
 export const deleteUser = async (req, res) => {
     try {
