@@ -10,7 +10,7 @@ const upload = multer({
     storage: multer.memoryStorage()
 })
 
-router.post("/upload-image", upload.single("photo"), async (req, res) => {
+router.post("/upload-image", upload.single("image"), async (req, res) => {
 
     try {
         if (!req.file) {

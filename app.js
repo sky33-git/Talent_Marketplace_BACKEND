@@ -13,7 +13,9 @@ import educationRoutes from './Routes/Education.routes.js';
 import projectRoutes from './Routes/Projects.routes.js'
 import languageRoutes from './Routes/Languages.routes.js'
 import experienceRoutes from './Routes/Experence.routes.js'
-
+import searchRoutes from "./Routes/Search.routes.js"
+import clientDetailsRoutes from './Routes/clientDetails.js'
+import socialRoutes from './Routes/Social.routes.js'
 
 dotenv.config()
 
@@ -28,14 +30,16 @@ app.use(cors({
 }))
 
 app.use('/auth/api', AuthRouter)
-app.use('/api/users', imageRouter)
+app.use('/api', imageRouter)
 app.use('/api/users', userRoutes)
 app.use('/api/clients', clientRoutes)
 app.use('/api/users', educationRoutes)
 app.use('/api/users', experienceRoutes)
 app.use('/api/users', languageRoutes)
-app.use('/api/users', projectRoutes);
-// app.use('api/parser', dataParse)
+app.use('/api/users', projectRoutes)
+app.use('/api/search', searchRoutes)
+app.use('/api/clients', clientDetailsRoutes)
+app.use('/api/users', socialRoutes)
 
 mongoose.connect(process.env.MONGODB_CONNECTION).then(() => {
     console.log("Database connected succesfully!")

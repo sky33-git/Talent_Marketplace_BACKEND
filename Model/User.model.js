@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
-import Counter  from './Counter.model.js'
-
-
+import Counter from './Counter.model.js'
 
 const UserSchema = new mongoose.Schema({
 
@@ -10,14 +8,32 @@ const UserSchema = new mongoose.Schema({
     name: String,
     email: String,
     phone: Number,
-    country: String,
     avatar: {
         type: String,
         default: ""
     },
-    linkedInURL: String,
-    githubURL: String,
-    portfolioURL: String,
+    userProfileImageURL: String,
+    backgroundImageURL: String,
+    bio: {
+        type: String,
+        maxlength: 300,
+        default: "Pleases add bio!"
+    },
+    location: {
+        country: String,
+        city: String,
+        timezone: String
+    },
+    socials: {
+        type: [
+            {
+                _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+                socialType: String,
+                URL: String,
+                enum: ["LINKEDIN, GITHUB, PORTFOLIO, INSTAGRAM, TWITTER"]
+            }
+        ]
+    },
     role: {
         type: String,
         default: 'user',
@@ -49,8 +65,10 @@ const UserSchema = new mongoose.Schema({
                 companyName: String,
                 startDate: Date,
                 endDate: Date,
+                Remote: Boolean,
+                currentlyWoorking: Boolean,
                 location: String,
-                description: String
+                description: String,
             }
         ],
         default: []
@@ -73,15 +91,8 @@ const UserSchema = new mongoose.Schema({
         default: []
     },
     language: {
-        type: [{
-            _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
-            langName: String,
-            proficiency: {
-                type: String,
-                enum: ["Fluent", "Intermediate", "Conversational", "Native"]
-            }
-        }],
-        default: []
+        type: [String],
+        default: ""
     },
     charges: {
         userRate: Number,
@@ -91,8 +102,28 @@ const UserSchema = new mongoose.Schema({
         },
         finalRate: Number,
     },
-    userProfileImageURL: String,
-    backgroundImageURL: String,
+    training: {
+        type: [
+            {
+                _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+                title: String,
+                provider: String,
+                location: String,
+                startDate: Date,
+                endDate: Date,
+                description: String
+            }
+        ],
+        default: []
+    },
+    accomplishment: {
+        type: String,
+        default: "Eg. Secured 1st rank among 500 entries in National level hackthon."
+    },
+extraCurricularActivities: {
+        type: String,
+        default: "Eg. Lead a team of 8 members while organizing a special event in our office for a special occasion."
+    },
     lastLogin: Date
 
 }, { timestamps: true }, { _id: false })
@@ -110,7 +141,6 @@ UserSchema.pre('save', async function (next) {
     this.userId = counter.seq
     next();
 })
-
 
 const User = mongoose.model('users', UserSchema, 'Users')
 
