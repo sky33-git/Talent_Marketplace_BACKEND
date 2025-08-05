@@ -29,7 +29,7 @@ const UserSchema = new mongoose.Schema({
             {
                 _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
                 socialType: String,
-                URL: String,
+                url: String,
                 enum: ["LINKEDIN, GITHUB, PORTFOLIO, INSTAGRAM, TWITTER"]
             }
         ]
@@ -66,7 +66,7 @@ const UserSchema = new mongoose.Schema({
                 startDate: Date,
                 endDate: Date,
                 Remote: Boolean,
-                currentlyWoorking: Boolean,
+                currentlyWorking: Boolean,
                 location: String,
                 description: String,
             }
@@ -116,12 +116,12 @@ const UserSchema = new mongoose.Schema({
         ],
         default: []
     },
-    accomplishment: {
-        type: String,
+    accomplishments: {
+        type: [String],
         default: "Eg. Secured 1st rank among 500 entries in National level hackthon."
     },
-extraCurricularActivities: {
-        type: String,
+extraCurricular: {
+        type: [String],
         default: "Eg. Lead a team of 8 members while organizing a special event in our office for a special occasion."
     },
     lastLogin: Date

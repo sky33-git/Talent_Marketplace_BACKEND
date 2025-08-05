@@ -15,7 +15,7 @@ export const getAllClients = async (req, res) => {
 export const getClientById = async (req, res) => {
 
     try {
-        const clients = await Client.findById(req.params.id)
+        const clients = await Client.findOne({ clientId: req.params.id })
         res.json(clients);
     }
     catch (err) {
@@ -30,7 +30,11 @@ export const createClient = async (req, res) => {
         const clients = new Client(req.body)
         await clients.save()
 
-        res.status(201).json(clients);
+        res.status(201).json({
+            message: "Client created successfully",
+            clientId: clients.clientId,
+            clients
+        });
     }
     catch (err) {
         res.status(500).json({

@@ -16,6 +16,7 @@ import experienceRoutes from './Routes/Experence.routes.js'
 import searchRoutes from "./Routes/Search.routes.js"
 import clientDetailsRoutes from './Routes/clientDetails.js'
 import socialRoutes from './Routes/Social.routes.js'
+import trainingRoutes from './Routes/Training.routes.js'
 
 dotenv.config()
 
@@ -40,6 +41,7 @@ app.use('/api/users', projectRoutes)
 app.use('/api/search', searchRoutes)
 app.use('/api/clients', clientDetailsRoutes)
 app.use('/api/users', socialRoutes)
+app.use('/api/users', trainingRoutes)
 
 mongoose.connect(process.env.MONGODB_CONNECTION).then(() => {
     console.log("Database connected succesfully!")

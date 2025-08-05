@@ -44,7 +44,11 @@ export const createUser = async (req, res) => {
         const user = new User(req.body)
         await user.save()
 
-        res.status(201).json(user);
+        res.status(201).json({
+            message: "User created successfully",
+            userId: user.userId,
+            user
+        });
     }
 
     catch (err) {
@@ -59,7 +63,8 @@ export const updateUser = async (req, res) => {
     try {
         const user = await User.findOneAndUpdate(
             { userId: req.params.id }, req.body,
-            {   new: true,
+            {
+                new: true,
                 runValidators: true
             })
 
