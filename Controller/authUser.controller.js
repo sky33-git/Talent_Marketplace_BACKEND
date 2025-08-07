@@ -37,8 +37,10 @@ export const userGoogleSignUp = async (req, res) => {
         res.status(200).json({
             success: true,
             user,
-            token
+            token,
+            redirect: (`http://localhost:5173/developer/preview/${user.userId}`)
         })
+
 
     } catch (error) {
         res.status(500).json({
@@ -90,7 +92,7 @@ export const userLinkedinCallback = async (req, res) => {
             httpOnly: true
         })
 
-        res.redirect('http://localhost:5173/developer/resume')
+        res.redirect(`http://localhost:5173/developer/preview/${linkedinUser.userId}`)
     }
     catch (err) {
         console.error("LinkedIn callback error:", err)

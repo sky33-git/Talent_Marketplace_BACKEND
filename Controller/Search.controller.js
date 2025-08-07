@@ -52,8 +52,8 @@ export const getClientsByQuery = async (req, res) => {
         const searchRegex = new RegExp(q, 'i')
         const clientQuery = {
             $or: [
-                { 'clientDetails.clientName': searchRegex },
-                { 'clientDetails.industry': searchRegex },
+                { name: searchRegex },
+                { email: searchRegex },
                 { 'location.city': searchRegex }
             ]
         }

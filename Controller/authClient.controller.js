@@ -42,7 +42,7 @@ export const clientLinkedinCallback = async (req, res) => {
             httpOnly: true
         })
 
-        res.redirect('http://localhost:5173/company/manual-fillup')
+        res.redirect(`http://localhost:5173/company/preview/${linkedinUser.clientId}`)
     }
     catch (err) {
         console.error("LinkedIn callback error:", err)
@@ -83,7 +83,8 @@ export const clientGoogleSignUp = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            client
+            client,
+            token
         })
 
     } catch (error) {

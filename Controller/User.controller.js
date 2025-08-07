@@ -1,4 +1,5 @@
 import User from "../Model/User.model.js";
+import jwt from 'jsonwebtoken'
 
 export const getAllUsers = async (req, res) => {
     try {
@@ -90,3 +91,28 @@ export const deleteUser = async (req, res) => {
         })
     }
 }
+
+export const userCheck = async (req, res) => {
+
+    const token = req.cookies.access_token;
+
+    if (!token) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        const user = await User.findById(decoded.id);
+        if (!user) throw new Error("User not found");
+
+        return res.json({ user });
+    } 
+    catch (err) {
+            console.error("Error in /api/users/check:", err);
+            return res.status(500).json({ error: err.message });
+        }
+
+    }
+
+

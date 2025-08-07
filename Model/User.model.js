@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema({
 
     firebaseUId: String,
     userId: Number,
-    name: String,
+    fullName: String,
     email: String,
     phone: Number,
     avatar: {
@@ -50,9 +50,14 @@ const UserSchema = new mongoose.Schema({
             {
                 _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
                 title: String,
-                techStack: [String],
-                projectLiveURL: String,
-                description: String
+                description: String,
+                startDate: Date,
+                endDate: {
+                    type: Date,
+                    default: null
+                },
+                workingCurrently: Boolean,
+                url: String,
             }
         ],
         default: [],
@@ -65,7 +70,7 @@ const UserSchema = new mongoose.Schema({
                 companyName: String,
                 startDate: Date,
                 endDate: Date,
-                Remote: Boolean,
+                workType: String,
                 currentlyWorking: Boolean,
                 location: String,
                 description: String,
@@ -120,7 +125,7 @@ const UserSchema = new mongoose.Schema({
         type: [String],
         default: "Eg. Secured 1st rank among 500 entries in National level hackthon."
     },
-extraCurricular: {
+    extraCurricular: {
         type: [String],
         default: "Eg. Lead a team of 8 members while organizing a special event in our office for a special occasion."
     },
