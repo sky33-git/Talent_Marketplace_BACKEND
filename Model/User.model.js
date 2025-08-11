@@ -4,7 +4,10 @@ import Counter from './Counter.model.js'
 const UserSchema = new mongoose.Schema({
 
     firebaseUId: String,
-    userId: Number,
+    userId: {
+        type: Number,
+        unique: true
+    },
     fullName: String,
     email: String,
     phone: Number,
@@ -22,7 +25,6 @@ const UserSchema = new mongoose.Schema({
     location: {
         country: String,
         city: String,
-        timezone: String
     },
     socials: {
         type: [
@@ -107,20 +109,20 @@ const UserSchema = new mongoose.Schema({
         },
         finalRate: Number,
     },
-    training: {
-        type: [
-            {
-                _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
-                title: String,
-                provider: String,
-                location: String,
-                startDate: Date,
-                endDate: Date,
-                description: String
-            }
-        ],
-        default: []
-    },
+    // training: {
+    //     type: [
+    //         {
+    //             _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+    //             title: String,
+    //             provider: String,
+    //             location: String,
+    //             startDate: Date,
+    //             endDate: Date,
+    //             description: String
+    //         }
+    //     ],
+    //     default: []
+    // },
     accomplishments: {
         type: [String],
         default: "Eg. Secured 1st rank among 500 entries in National level hackthon."

@@ -4,7 +4,7 @@ import User from '../Model/User.model.js';
 
 const router = express.Router()
 
-router.post('/:userId/education', async (req, res) => {
+router.post('/:userId/educations', async (req, res) => {
     const { userId } = req.params;
 
     try {
@@ -27,7 +27,7 @@ router.post('/:userId/education', async (req, res) => {
     }
 })
 
-router.put('/:userId/education/:educationId', async (req, res) => {
+router.put('/:userId/educations/:educationId', async (req, res) => {
     const { userId, educationId } = req.params
 
     if (!mongoose.Types.ObjectId.isValid(educationId)) {
@@ -59,7 +59,7 @@ router.put('/:userId/education/:educationId', async (req, res) => {
     }
 })
 
-router.delete('/:userId/education/:educationId', async (req, res) => {
+router.delete('/:userId/educations/:educationId', async (req, res) => {
     const { userId, educationId } = req.params;
 
     try {

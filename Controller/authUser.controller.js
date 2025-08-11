@@ -5,48 +5,57 @@ import admin from '../Config/firebase.js'
 
 export const userGoogleSignUp = async (req, res) => {
 
-    try {
-        const { name, email, phoneNumber, avatar, firebaseToken } = req.body
+    const { name, email, phoneNumber, avatar, firebaseToken } = req.body
 
-        const decoded = await admin.auth().verifyIdToken(firebaseToken)
-        const { uid } = decoded;
+    let user
+    user = await User.findOne({ email })
 
-        let user
-        user = await User.findOne({ email })
-
-        const authProvider = "google"
-        const firebaseUId = uid
-
-        if (!user) {
-            const newUser = new User({
-
-                name, email, phoneNumber, avatar, authProvider, firebaseUId
-            })
-            await newUser.save()
-            user = newUser
-        }
-
-        user = user.toObject({ getters: true })
-
-        const token = jwt.sign({ id: user._id, role: 'user' }, process.env.JWT_SECRET)
-
-        res.cookie('access_token', token, {
-            httpOnly: true
-        })
+    if (user) {
+        alert("user already exists | Please login!");
 
         res.status(200).json({
-            success: true,
-            user,
-            token,
-            redirect: (`http://localhost:5173/developer/preview/${user.userId}`)
-        })
-
-
-    } catch (error) {
-        res.status(500).json({
             success: false,
-            error
+            redirect: (`http://localhost:5173/login`)
         })
+    }
+
+    else {
+        if (!user) {
+
+            try {
+                const authProvider = "google"
+                const firebaseUId = uid
+
+                const decoded = await admin.auth().verifyIdToken(firebaseToken)
+                const { uid } = decoded;
+
+                const newUser = new User({
+                    name, email, phoneNumber, avatar, authProvider, firebaseUId
+                })
+                await newUser.save()
+                user = newUser
+
+                user = user.toObject({ getters: true })
+                const token = jwt.sign({ id: user._id, role: 'user' }, process.env.JWT_SECRET)
+
+                res.cookie('access_token', token, {
+                    httpOnly: true
+                })
+
+                res.status(200).json({
+                    success: true,
+                    user,
+                    token,
+                    redirect: (`http://localhost:5173/developer/personal-details/${user.userId}`)
+                })
+
+            } catch (error) {
+                res.status(500).json({
+                    success: false,
+                    error
+                })
+            }
+        }
     }
 }
 
@@ -73,7 +82,14 @@ export const userLinkedinCallback = async (req, res) => {
 
         let linkedinUser = await User.findOne({ email: userInfo.email })
 
-        if (!linkedinUser) {
+        if (linkedinUser) {
+            
+            return res.status(302).json({
+                message: 'User already exists',
+                redirect: '/login',
+            });
+        }
+        else {
             linkedinUser = new User({
                 name: userInfo.name,
                 email: userInfo.email,

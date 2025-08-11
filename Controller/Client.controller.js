@@ -44,16 +44,23 @@ export const createClient = async (req, res) => {
 }
 
 export const updateClient = async (req, res) => {
+
     try {
-        const clients = await Client.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-        })
-        res.json(clients);
+        const client = await Client.findOneAndUpdate(
+            { clientId: req.params.id }, req.body,
+            {
+                new: true,
+                runValidators: true
+            })
+
+        if (!client) {
+            return res.status(404).json({ error: "Client not found" })
+        }
+
+        res.json(client)
     }
     catch (err) {
-        res.status(500).json({
-            error: err.message
-        })
+        res.status(500).json({ error: err.message })
     }
 }
 

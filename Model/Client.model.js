@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 import { createRequire } from 'node:module';
+import { type } from "node:os";
 
 const require = createRequire(import.meta.url);
 const AutoIncrementFactory = require('mongoose-sequence');
@@ -10,15 +11,13 @@ const AutoIncrement = AutoIncrementFactory(mongoose);
 const clientSchema = new mongoose.Schema({
 
     firebaseUid: String,
-    clientId: Number,
-    name: String,
-    email: String,
-    phone: Number,
-    location: {
-        country: String,
-        city: String,
-        timezone: String
+    clientId: { 
+        type: Number,
+        unique: true
     },
+    fullName: String,
+    email: String,
+    designation: String,
     role: {
         type: String,
         default: 'client',
@@ -27,28 +26,40 @@ const clientSchema = new mongoose.Schema({
         type: String,
         enum: ["linkedIn", "google", "email"]
     },
-    clientDetails: {
-        client_id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+    clientDetails:
+    {
+        _id: { type: mongoose.Schema.Types.ObjectId, auto: false },
         clientName: String,
+        clientEmail: String,
+        clientPhone: String,
         clientSize: {
             type: String,
             enum: ['1-9', '10-25', '26-50', '50+', '100+']
         },
         industry: String,
-        socials: {
-            type: [
-                {
-                    _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
-                    socialType: String,
-                    URL: String,
-                    enum: ["LINKEDIN, GITHUB, PORTFOLIO, INSTAGRAM, TWITTER"]
-                }
-            ]
+        location: {
+            type: {
+                country: String,
+                city: String
+            },
+            default: false
         },
+        establishedYear: String,
+        clientWebsite: String,
         clientType: {
             type: String,
             enum: ['company', 'agency', 'individual'],
         },
+        clientSocials: [
+            {
+                _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+                socialType: {
+                    type: String,
+                    enum: ["LINKEDIN", "PORTFOLIO", "INSTAGRAM", "TWITTER"]
+                },
+                url: String,
+            }
+        ],
         description: String,
         clientProfileImageURL: String,
         clientBackgroundImageURL: String,

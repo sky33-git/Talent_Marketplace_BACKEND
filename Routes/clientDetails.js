@@ -5,59 +5,43 @@ import Client from '../Model/Client.model.js';
 const router = express.Router()
 
 router.post('/:clientId/client-details', async (req, res) => {
-    const { clientId } = req.params;
+  const { clientId } = req.params;
 
-    try {
-        const clientEntry = {
-            _id: new mongoose.Types.ObjectId(),
-            ...req.body
-        }
+  try {
+    const client = await Client.findOneAndUpdate(
+      { clientId: parseInt(clientId) },
+      { $set: { clientDetails: req.body } }, // ✅ set object directly
+      { new: true }
+    );
 
-        const client = await Client.findOneAndUpdate(
-            { clientId: parseInt(clientId) },
-            { $push: { clientDetails: clientEntry } },
-            { new: true }
-        )
+    if (!client) return res.status(404).json({ message: 'Client not found' });
 
-        if (!client) return res.status(404).json({ message: 'client not found' })
+    res.status(201).json({ message: 'Client details added', clientDetails: client.clientDetails });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-        res.status(201).json({ message: 'Details added', clientEntry })
-    } catch (err) {
-        res.status(500).json({ error: err.message })
-    }
-})
 
-router.put('/:clientId/client-details/:detailsId', async (req, res) => {
-    const { clientId, detailsId } = req.params
+router.put('/:clientId/client-details', async (req, res) => {
+  const { clientId } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(detailsId)) {
-        return res.status(400).json({ message: 'Invalid details ID' })
-    }
+  try {
+    const client = await Client.findOne({ clientId: parseInt(clientId) });
+    if (!client) return res.status(404).json({ message: 'Client not found' });
 
-    try {
-        const client = await Client.findOneAndUpdate(
-            { clientId: parseInt(clientId), 'details._id': clientId },
-            {
-                $set: {
-                    'clientDetails.$': {
-                        ...req.body,
-                        _id: clientId
-                    }
-                }
-            },
-            { new: true }
-        )
+    client.clientDetails = {
+      ...client.clientDetails,
+      ...req.body // ✅ merge with existing fields
+    };
 
-        if (!client) return res.status(404).json({ message: 'Client or details entry not found' })
+    await client.save();
 
-        const updatedDetails = client.clientDetails.find(ele => ele._id.toString() === detailsId)
-
-        res.json({ message: 'Client Details updated successfully', updatedDetails })
-
-    } catch (err) {
-        res.status(500).json({ error: err.message })
-    }
-})
+    res.json({ message: 'Client details updated successfully', clientDetails: client.clientDetails });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 router.delete('/:clientId/client-details/:detailsId', async (req, res) => {
     const { clientId, detailsId } = req.params;
@@ -78,4 +62,3 @@ router.delete('/:clientId/client-details/:detailsId', async (req, res) => {
 })
 
 export default router
-
