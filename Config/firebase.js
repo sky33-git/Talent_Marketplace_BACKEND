@@ -1,13 +1,11 @@
-import admin from "firebase-admin";
-import dotenv from "dotenv";
-import path from "path";
-import { readFileSync } from "fs";
+import 'dotenv/config';
+import admin from 'firebase-admin';
 
-dotenv.config();
+if (!process.env.SERVICE_ACCOUNT) {
+  throw new Error('FIREBASE_CONFIG environment variable is missing');
+}
 
-const serviceAccountPath = path.resolve(process.env.SERVICE_ACCOUNT_PATH);
-const serviceAccount = JSON.parse(readFileSync(serviceAccountPath, "utf8"));
-
+const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
