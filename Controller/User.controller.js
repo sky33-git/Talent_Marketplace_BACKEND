@@ -103,16 +103,16 @@ export const userCheck = async (req, res) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        const user = await User.findById(decoded.id);
+        const user = await User.findById(decoded._id);
         if (!user) throw new Error("User not found");
 
         return res.json({ user });
-    } 
-    catch (err) {
-            console.error("Error in /api/users/check:", err);
-            return res.status(500).json({ error: err.message });
-        }
-
     }
+    catch (err) {
+        console.error("Error in /api/users/check:", err);
+        return res.status(500).json({ error: err.message });
+    }
+
+}
 
 

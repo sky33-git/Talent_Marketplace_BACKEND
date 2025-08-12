@@ -1,6 +1,6 @@
 import Client from '../Model/Client.model.js'
-import jwt from 'jsonwebtoken'
 import { getAccessToken, getUserInfo } from '../Config/auth.js'
+import { generateClientToken } from '../Utilities/token.js';
 
 export const clientLinkedinCallback = async (req, res) => {
 
@@ -22,6 +22,10 @@ export const clientLinkedinCallback = async (req, res) => {
 
         let linkedinUser = await Client.findOne({ email: clientInfo.email })
 
+        if (linkedinUser) {
+            return res.redirect(`http:localhost:5173/login/?userExists=true`)
+        }
+
         if (!linkedinUser) {
             linkedinUser = new Client({
                 name: clientInfo.name,
@@ -34,11 +38,9 @@ export const clientLinkedinCallback = async (req, res) => {
             await linkedinUser.save()
         }
 
-        const token = jwt.sign(
-            { id: linkedinUser._id, role: 'client' }, 
-            process.env.JWT_SECRET, { expiresIn: '30d' })
+        const token = generateClientToken(linkedinUser)
 
-        res.cookie('jwt_token', token, {
+        res.cookie('access_token', token, {
             httpOnly: true
         })
 
@@ -72,10 +74,7 @@ export const clientGoogleSignUp = async (req, res) => {
         }
 
         client = client.toObject({ getters: true })
-
-        const token = jwt.sign({ id: client._id, role: 'client' }, process.env.JWT_SECRET, {
-            expiresIn: '30d'
-        })
+        const token = generateClientToken(client)
 
         res.cookie('access_token', token, {
             httpOnly: true
@@ -84,7 +83,8 @@ export const clientGoogleSignUp = async (req, res) => {
         res.status(200).json({
             success: true,
             client,
-            token
+            token,
+            redirect: `http:localhost:5173/login/?userExists=true`
         })
 
     } catch (error) {

@@ -3,6 +3,7 @@ import Client from '../Model/Client.model.js'
 import jwt from 'jsonwebtoken'
 import admin from '../Config/firebase.js'
 import { getAccessToken_User, getUserInfo } from '../Config/loginAuth.js';
+import { generateClientToken, generateUserToken } from '../Utilities/token.js';
 
 // =================== Google Login ===================
 export const googleLogin = async (req, res) => {
@@ -21,7 +22,7 @@ export const googleLogin = async (req, res) => {
       user.lastLogin = new Date()
       await user.save()
 
-      const token = jwt.sign({ id: user.userId, role: 'user' }, process.env.JWT_SECRET)
+      const token = generateUserToken(user)
       res.cookie('access_token', token, {
         httpOnly: true,
       })
@@ -34,11 +35,12 @@ export const googleLogin = async (req, res) => {
     }
 
     let client = await Client.findOne({ firebaseUId })
+
     if (client) {
       client.lastLogin = new Date()
       await client.save()
 
-      const token = jwt.sign({ id: client._id, role: 'client' }, process.env.JWT_SECRET)
+      const token = generateClientToken(client)
       res.cookie('access_token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
@@ -68,59 +70,59 @@ export const googleLogin = async (req, res) => {
 
 // =================== LinkedIn Login ===================
 export const LinkedinLogin = async (req, res) => {
-    try {
-        const { code } = req.query
-        if (!code) {
-            return res.status(400).json({ error: "Missing 'code' query parameter" })
-        }
-
-        const accessToken = await getAccessToken_User(code)
-        const userInfo = await getUserInfo(accessToken.access_token)
-
-        if (!userInfo) {
-            return res.status(500).json({ error: "Failed to fetch user info from LinkedIn" })
-        }
-
-        const email = userInfo.email
-
-        let user = await User.findOne({ email })
-        if (user) {
-            user.lastLogin = new Date()
-            await user.save()
-
-            const token = jwt.sign({ id: user._id, role: 'user' }, process.env.JWT_SECRET)
-            res.cookie('jwt_token', token, { httpOnly: true })
-
-            return res.redirect('http://localhost:5173/developer-portfolio')
-        }
-
-        let client = await Client.findOne({ email })
-        if (client) {
-            client.lastLogin = new Date()
-            await client.save()
-
-            const token = jwt.sign({ id: client._id, role: 'client' }, process.env.JWT_SECRET)
-            res.cookie('jwt_token', token, { httpOnly: true })
-
-            return res.redirect('http://localhost:5173/company-portfolio')
-        }
-
-        return res.redirect('http://localhost:5173/role-selection')
-
-    } catch (err) {
-        console.error("LinkedIn callback error:", err)
-        if (!res.headersSent) {
-            return res.status(500).json({ error: err.message })
-        }
+  try {
+    const { code } = req.query
+    if (!code) {
+      return res.status(400).json({ error: "Missing 'code' query parameter" })
     }
+
+    const accessToken = await getAccessToken_User(code)
+    const userInfo = await getUserInfo(accessToken.access_token)
+
+    if (!userInfo) {
+      return res.status(500).json({ error: "Failed to fetch user info from LinkedIn" })
+    }
+
+    const email = userInfo.email
+
+    let user = await User.findOne({ email })
+    if (user) {
+      user.lastLogin = new Date()
+      await user.save()
+
+      const token = generateUserToken(user)
+      res.cookie('access_token', token, { httpOnly: true })
+
+      return res.redirect(`http://localhost:5173/developer/portfolio/${user.userId}`)
+    }
+
+    let client = await Client.findOne({ email })
+    if (client) {
+      client.lastLogin = new Date()
+      await client.save()
+
+      const token = generateClientToken(client)
+      res.cookie('access_token', token, { httpOnly: true })
+
+      return res.redirect(`http://localhost:5173/company/portfolio/${client.clientId}`)
+    }
+
+    return res.redirect('http://localhost:5173/role-selection?q=userExists=false')
+
+  } catch (err) {
+    console.error("LinkedIn callback error:", err)
+    if (!res.headersSent) {
+      return res.status(500).json({ error: err.message })
+    }
+  }
 }
 
 // =================== Logout ===================
 export const logout = (req, res) => {
-    res.clearCookie('jwt_token', {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'Lax'
-    })
-    return res.status(200).json({ success: true, message: 'Logged out' })
+  res.clearCookie('access_token', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'Lax'
+  })
+  return res.status(200).json({ success: true, message: 'Logged out' })
 }

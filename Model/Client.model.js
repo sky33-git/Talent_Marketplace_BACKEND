@@ -11,7 +11,7 @@ const AutoIncrement = AutoIncrementFactory(mongoose);
 const clientSchema = new mongoose.Schema({
 
     firebaseUid: String,
-    clientId: { 
+    clientId: {
         type: Number,
         unique: true
     },
@@ -28,7 +28,7 @@ const clientSchema = new mongoose.Schema({
     },
     clientDetails:
     {
-        _id: { type: mongoose.Schema.Types.ObjectId, auto: false },
+        // _id: { type: mongoose.Schema.Types.ObjectId, auto: false },
         clientName: String,
         clientEmail: String,
         clientPhone: String,
@@ -42,7 +42,6 @@ const clientSchema = new mongoose.Schema({
                 country: String,
                 city: String
             },
-            default: false
         },
         establishedYear: String,
         clientWebsite: String,

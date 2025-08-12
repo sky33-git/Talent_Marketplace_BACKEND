@@ -60,6 +60,7 @@ const UserSchema = new mongoose.Schema({
                 },
                 workingCurrently: Boolean,
                 url: String,
+                thumbnail: String
             }
         ],
         default: [],
