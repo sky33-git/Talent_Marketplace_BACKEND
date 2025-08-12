@@ -1,3 +1,9 @@
+export const BASE_API = `http://localhost:5173`
+export const BACKEND_API = `http://localhost:3000`
+
+
+
+
 // function parseResumeText(text) {
 //     // Primitive fields
 //     const nameRegex = /(?:Name|Candidate|Profile):?\s*([A-Z][a-z]+\s[A-Z][a-z]+(?:\s[A-Z][a-z]+)*)/i;

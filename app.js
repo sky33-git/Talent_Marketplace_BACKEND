@@ -17,6 +17,7 @@ import searchRoutes from "./Routes/Search.routes.js"
 import clientDetailsRoutes from './Routes/clientDetails.js'
 import socialRoutes from './Routes/Social.routes.js'
 import trainingRoutes from './Routes/Training.routes.js'
+import { BASE_API } from "./Utilities/utility.js"
 
 dotenv.config()
 
@@ -26,7 +27,7 @@ const app = express()
 app.use(cookieParser())
 app.use(express.json())
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: `${BASE_API}`,
     credentials: true
 }))
 

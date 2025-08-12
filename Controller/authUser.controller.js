@@ -2,6 +2,7 @@ import User from '../Model/User.model.js'
 import { getAccessToken_User, getUserInfo } from '../Config/auth.js'
 import admin from '../Config/firebase.js'
 import { generateUserToken } from '../Utilities/token.js'
+import { BASE_API } from '../Utilities/utility.js'
 
 export const userGoogleSignUp = async (req, res) => {
 
@@ -11,7 +12,7 @@ export const userGoogleSignUp = async (req, res) => {
     user = await User.findOne({ email })
 
     if (user) {
-        return res.redirect('http://localhost:5173/login?userExists=true')
+        return res.redirect(`${BASE_API}/login?userExists=true`)
     }
 
     try {
@@ -38,7 +39,7 @@ export const userGoogleSignUp = async (req, res) => {
             success: true,
             user,
             token,
-            redirect: `http://localhost:5173/developer/personal-details/${user.userId}`
+            redirect: `${BASE_API}/developer/personal-details/${user.userId}`
         })
 
     } catch (error) {
@@ -73,7 +74,7 @@ export const userLinkedinCallback = async (req, res) => {
         let linkedinUser = await User.findOne({ email: userInfo.email })
 
         if (linkedinUser) {
-            return res.redirect('http://localhost:5173/login?userExists=true')
+            return res.redirect(`${BASE_API}/login?userExists=true`)
         }
         else {
             linkedinUser = new User({
@@ -92,7 +93,7 @@ export const userLinkedinCallback = async (req, res) => {
             httpOnly: true
         })
 
-        res.redirect(`http://localhost:5173/developer/personal-details/${linkedinUser.userId}`)
+        res.redirect(`${BASE_API}/developer/personal-details/${linkedinUser.userId}`)
     }
     catch (err) {
         console.error("LinkedIn callback error:", err)

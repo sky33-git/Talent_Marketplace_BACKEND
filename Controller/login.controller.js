@@ -1,9 +1,9 @@
 import User from '../Model/User.model.js'
 import Client from '../Model/Client.model.js'
-import jwt from 'jsonwebtoken'
 import admin from '../Config/firebase.js'
 import { getAccessToken_User, getUserInfo } from '../Config/loginAuth.js';
 import { generateClientToken, generateUserToken } from '../Utilities/token.js';
+import { BASE_API } from '../Utilities/utility.js';
 
 // =================== Google Login ===================
 export const googleLogin = async (req, res) => {
@@ -67,7 +67,6 @@ export const googleLogin = async (req, res) => {
   }
 }
 
-
 // =================== LinkedIn Login ===================
 export const LinkedinLogin = async (req, res) => {
   try {
@@ -93,7 +92,7 @@ export const LinkedinLogin = async (req, res) => {
       const token = generateUserToken(user)
       res.cookie('access_token', token, { httpOnly: true })
 
-      return res.redirect(`http://localhost:5173/developer/portfolio/${user.userId}`)
+      return res.redirect(`${BASE_API}/developer/portfolio/${user.userId}`)
     }
 
     let client = await Client.findOne({ email })
@@ -104,10 +103,10 @@ export const LinkedinLogin = async (req, res) => {
       const token = generateClientToken(client)
       res.cookie('access_token', token, { httpOnly: true })
 
-      return res.redirect(`http://localhost:5173/company/portfolio/${client.clientId}`)
+      return res.redirect(`${BASE_API}/company/portfolio/${client.clientId}`)
     }
 
-    return res.redirect('http://localhost:5173/role-selection?q=userExists=false')
+    return res.redirect(`${BASE_API}/role-selection?q=userExists=false`)
 
   } catch (err) {
     console.error("LinkedIn callback error:", err)

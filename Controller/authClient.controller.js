@@ -1,6 +1,7 @@
 import Client from '../Model/Client.model.js'
 import { getAccessToken, getUserInfo } from '../Config/auth.js'
 import { generateClientToken } from '../Utilities/token.js';
+import { BASE_API } from '../Utilities/utility.js';
 
 export const clientLinkedinCallback = async (req, res) => {
 
@@ -23,7 +24,7 @@ export const clientLinkedinCallback = async (req, res) => {
         let linkedinUser = await Client.findOne({ email: clientInfo.email })
 
         if (linkedinUser) {
-            return res.redirect(`http:localhost:5173/login/?userExists=true`)
+            return res.redirect(`${BASE_API}/login/?userExists=true`)
         }
 
         if (!linkedinUser) {
@@ -44,7 +45,7 @@ export const clientLinkedinCallback = async (req, res) => {
             httpOnly: true
         })
 
-        res.redirect(`http://localhost:5173/company/preview/${linkedinUser.clientId}`)
+        res.redirect(`${BASE_API}/company/preview/${linkedinUser.clientId}`)
     }
     catch (err) {
         console.error("LinkedIn callback error:", err)
@@ -84,7 +85,7 @@ export const clientGoogleSignUp = async (req, res) => {
             success: true,
             client,
             token,
-            redirect: `http:localhost:5173/login/?userExists=true`
+            redirect: `${BASE_API}/login/?userExists=true`
         })
 
     } catch (error) {

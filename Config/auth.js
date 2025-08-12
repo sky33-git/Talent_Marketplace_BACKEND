@@ -1,3 +1,5 @@
+import { BACKEND_API } from "../Utilities/utility.js";
+
 export const getAccessToken_User = async (code) => {
 
     const body = new URLSearchParams({
@@ -5,7 +7,7 @@ export const getAccessToken_User = async (code) => {
         code: code,
         client_id: process.env.LINKEDIN_CLIENT_ID,
         client_secret: process.env.LINKEDIN_CLIENT_SECRET_KEY,
-        redirect_uri: 'http://localhost:3000/auth/api/user-linkedin-signup',
+        redirect_uri: `${BACKEND_API}/auth/api/user-linkedin-signup`,
     })
 
     const response = await fetch('https://www.linkedin.com/oauth/v2/accessToken', {
@@ -33,7 +35,7 @@ export const getAccessToken = async (code) => {
         code: code,
         client_id: process.env.LINKEDIN_CLIENT_ID,
         client_secret: process.env.LINKEDIN_CLIENT_SECRET_KEY,
-        redirect_uri: 'http://localhost:3000/auth/api/client-linkedin-signup',
+        redirect_uri: `${BACKEND_API}/auth/api/client-linkedin-signup`,
     })
 
     const response = await fetch('https://www.linkedin.com/oauth/v2/accessToken', {
