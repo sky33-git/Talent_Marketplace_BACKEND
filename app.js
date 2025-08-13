@@ -28,7 +28,8 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(cors({
     origin: `${BASE_API}`,
-    credentials: true
+    credentials: true,
+    methods:["GET", "POST", "PUT", "DELETE"]
 }))
 
 app.use('/auth/api', AuthRouter)
