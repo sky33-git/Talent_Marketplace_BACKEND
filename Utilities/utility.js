@@ -1,5 +1,5 @@
-export const BASE_API = `http://localhost:5173`
-export const BACKEND_API = `http://localhost:3000`
+export const BASE_API = `https://talent-marketplace-eight.vercel.app`
+export const BACKEND_API = `https://ai-markteplace-gtmotion-ai.onrender.com`
 
 
 
