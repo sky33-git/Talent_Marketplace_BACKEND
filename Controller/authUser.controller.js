@@ -17,10 +17,10 @@ export const userGoogleSignUp = async (req, res) => {
 
     try {
         const authProvider = "google"
-        const firebaseUId = uid
 
         const decoded = await admin.auth().verifyIdToken(firebaseToken)
         const { uid } = decoded;
+        const firebaseUId = uid
 
         const newUser = new User({
             name, email, phoneNumber, avatar, authProvider, firebaseUId
@@ -45,7 +45,7 @@ export const userGoogleSignUp = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            error
+            error:error.message
         })
     }
 }

@@ -2,6 +2,7 @@ import Client from '../Model/Client.model.js'
 import { getAccessToken, getUserInfo } from '../Config/auth.js'
 import { generateClientToken } from '../Utilities/token.js';
 import { BASE_API } from '../Utilities/utility.js';
+import admin from '../Config/firebase.js'
 
 export const clientLinkedinCallback = async (req, res) => {
 
@@ -66,9 +67,13 @@ export const clientGoogleSignUp = async (req, res) => {
 
         const authProvider = "google"
 
+        const decoded = await admin.auth().verifyIdToken(firebaseToken)
+        const { uid } = decoded;
+        const firebaseUId = uid
+
         if (!client) {
             const newclient = new Client({
-                name, email, phoneNumber, avatar, authProvider
+                name, email, phoneNumber, avatar, authProvider, firebaseUId
             })
             await newclient.save()
             client = newclient

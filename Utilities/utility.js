@@ -1,11 +1,9 @@
 export const BASE_API = `http://localhost:5173`
 export const BACKEND_API = `http://localhost:3000`
 
-
-
-
 // function parseResumeText(text) {
-//     // Primitive fields
+
+// // Primitive User-details
 //     const nameRegex = /(?:Name|Candidate|Profile):?\s*([A-Z][a-z]+\s[A-Z][a-z]+(?:\s[A-Z][a-z]+)*)/i;
 //     const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/;
 //     const phoneRegex = /(\+?\d{1,3}[-.\s]?)?(\(?\d{2,4}\)?[-.\s]?)*\d{6,10}/;
@@ -19,7 +17,7 @@ export const BACKEND_API = `http://localhost:3000`
 //     const skillsRegex = /Skills?:\s*([\w\s+#,.()-]+)/i;
 //     const titleRegex = /(Title|Designation|Current Position):\s*([A-Za-z\s,.-]+)/i;
 
-//     // Extract primitives
+// // Extract primitives
 //     const nameMatch = text.match(nameRegex);
 //     const emailMatch = text.match(emailRegex);
 //     const phoneMatch = text.match(phoneRegex);
@@ -31,7 +29,7 @@ export const BACKEND_API = `http://localhost:3000`
 //     const skillsMatch = text.match(skillsRegex);
 //     const titleMatch = text.match(titleRegex);
 
-//     // Projects extraction
+// // Projects extraction
 //     const projectsSectionRegex = /Projects?:\s*([\s\S]*?)(Experience|Education|Languages|$)/i;
 //     const projectsSectionMatch = text.match(projectsSectionRegex);
 
@@ -56,7 +54,7 @@ export const BACKEND_API = `http://localhost:3000`
 //         });
 //     }
 
-//     // Experience extraction
+// // Experience extraction
 //     const experienceSectionRegex = /Experience:?([\s\S]*?)(Education|Projects|Languages|$)/i;
 //     const experienceSectionMatch = text.match(experienceSectionRegex);
 
@@ -85,7 +83,7 @@ export const BACKEND_API = `http://localhost:3000`
 //         });
 //     }
 
-//     // Education extraction
+// // Education extraction
 //     const educationSectionRegex = /Education:?([\s\S]*?)(Experience|Projects|Languages|$)/i;
 //     const educationSectionMatch = text.match(educationSectionRegex);
 
@@ -114,7 +112,7 @@ export const BACKEND_API = `http://localhost:3000`
 //         });
 //     }
 
-//     // Language extraction
+// // Language extraction
 //     const languageSectionRegex = /Languages?:\s*((?:[\w\s]+(?:Fluent|Intermediate|Conversational|Native)?[,;\n\r]*)+)/i;
 //     const languageSectionMatch = text.match(languageSectionRegex);
 
@@ -131,7 +129,7 @@ export const BACKEND_API = `http://localhost:3000`
 //         }).filter(l => l.langName);
 //     }
 
-//     // Final structured object
+// // Final structured data
 //     const parsedData = {
 //         name: nameMatch ? nameMatch[1].trim() : '',
 //         email: emailMatch ? emailMatch[1].toLowerCase() : '',
