@@ -1,8 +1,5 @@
-export const BASE_API = `http://localhost:5173`
-export const BACKEND_API = `http://localhost:3000`
-
-
-
+export const BASE_API = `https://talent-marketplace-eight.vercel.app` //`http://localhost:5173` 
+export const BACKEND_API = `https://interiorbackend-83w0.onrender.com`   //`http://localhost:3000`
 
 // function parseResumeText(text) {
 //     // Primitive fields
