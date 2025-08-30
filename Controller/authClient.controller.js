@@ -1,8 +1,8 @@
 import Client from '../Model/Client.model.js'
 import { getAccessToken, getUserInfo } from '../Config/auth.js'
 import { generateClientToken } from '../Utilities/token.js';
-import { BASE_API } from '../Utilities/utility.js';
-import admin from '../Config/firebase.js'
+
+const BASE_API = process.env.FRONTEND_URL
 
 export const clientLinkedinCallback = async (req, res) => {
 

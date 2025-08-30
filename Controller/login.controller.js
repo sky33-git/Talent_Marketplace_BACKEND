@@ -3,8 +3,8 @@ import Client from '../Model/Client.model.js'
 import admin from '../Config/firebase.js'
 import { getAccessToken_User, getUserInfo } from '../Config/loginAuth.js';
 import { generateClientToken, generateUserToken } from '../Utilities/token.js';
-import { BASE_API } from '../Utilities/utility.js';
 
+const BASE_API = process.env.FRONTEND_URL
 // =================== Google Login ===================
 export const googleLogin = async (req, res) => {
   try {
