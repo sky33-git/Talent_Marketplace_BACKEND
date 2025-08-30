@@ -13,7 +13,11 @@ export const userGoogleSignUp = async (req, res) => {
     user = await User.findOne({ email })
 
     if (user) {
-        return res.redirect(`${BASE_API}/login?userExists=true`)
+        return res.json({
+            success: true,
+            redirect: (`${BASE_API}/login?userExists=true`),
+            userExists: true
+        })
     }
 
     try {
