@@ -1,4 +1,4 @@
-import { BACKEND_API } from "../Utilities/utility.js";
+const BACKEND_API = process.env.BACKEND_URL
 
 export const getAccessToken_User = async (code) => {
 

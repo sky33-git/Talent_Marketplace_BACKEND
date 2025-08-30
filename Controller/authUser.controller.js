@@ -2,7 +2,8 @@ import User from '../Model/User.model.js'
 import { getAccessToken_User, getUserInfo } from '../Config/auth.js'
 import admin from '../Config/firebase.js'
 import { generateUserToken } from '../Utilities/token.js'
-import { BASE_API } from '../Utilities/utility.js'
+
+const BASE_API = process.env.FRONTEND_URL
 
 export const userGoogleSignUp = async (req, res) => {
 
